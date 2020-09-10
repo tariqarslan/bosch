@@ -1,12 +1,11 @@
 <?php
 
-function find_combinations($keypad, $input, $index, $result="") {
+function find_combinations($keypad, $input, $index, &$output, $result="") {
 
     // if we have processed every digit of key, return the result
     if($index == -1) {
-        echo($result);
+        array_push($output, $result);
         return;
-
     }
 
     // stores current digit
@@ -17,7 +16,7 @@ function find_combinations($keypad, $input, $index, $result="") {
 
     // one by one replace the digit with each character in the corresponding list and recur for next digit
     for ($i = 0; $i < $length; $i++) {
-        find_combinations($keypad, $input, $index - 1, $keypad[$digit][$i] . $result);
+        find_combinations($keypad, $input, $index - 1, $output, $keypad[$digit][$i] . $result);
     }
 }
 
@@ -36,6 +35,7 @@ function get_combinations($input) {
         ['W', 'X', 'Y', 'Z']
     ];
 
-    $combinations = find_combinations($keypad, $input, count($input) - 1);
+    $combinations = [];
+    find_combinations($keypad, $input, count($input) - 1, $combinations);
     return $combinations;
 }
